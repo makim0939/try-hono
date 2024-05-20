@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { basicAuth } from 'hono/basic-auth'
 
 const app = new Hono()
 
@@ -46,7 +47,13 @@ app.get('/react', (c) => {
 app.get('/raw-response', (c)=> {
   return new Response('Response RowResponse')
 })
-
+app.use('/admin/*', basicAuth({
+  username: 'admin',
+  password: 'password'  
+}))
+app.get('/admin', (c) => {
+  return c.text('You logged in')
+})
 
 
 export default app
